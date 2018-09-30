@@ -2,8 +2,6 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const webpack =  require('webpack')
 
-const {name} = require('./../dll/vendors-manifest.json')
-
 let favicon = path.join(process.cwd(), 'favicon.ico')
 
 if (!require('fs').existsSync(favicon)) {
@@ -25,10 +23,6 @@ module.exports = {
       favicon,
       title: 'webpack-demo',
       template: path.join(process.cwd(), 'index.template.ejs'),
-      dll: `dll/${name}.dll.js`
-    }),
-    new webpack.DllReferencePlugin({
-      manifest: require('./../dll/vendors-manifest.json'),
     }),
     new webpack.optimize.MinChunkSizePlugin({
       minChunkSize: 20000 // Minimum number of characters

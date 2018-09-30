@@ -8,8 +8,8 @@ const routes = [
     component: () => import('src/view/count/count.vue'),
   },
   {
-    path: '/input',
-    component: () => import('src/view/input/index.vue'),
+    path: '/upload',
+    component: () => import('src/view/upload/index.vue'),
   },
 ]
 

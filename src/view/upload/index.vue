@@ -1,9 +1,11 @@
 <template>
   <div>
-    <input type="file"
-           @change="onFileChange" />
-    <img :src="image">
-    <button type="submit" @click="upload"></button>
+    <div>
+      <input type="file"
+            @change="onFileChange" />
+      <img :src="image">
+    </div>
+    <button type="submit" @click="upload">upload</button>
   </div>
 </template>
 <script>
