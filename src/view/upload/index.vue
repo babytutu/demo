@@ -1,11 +1,16 @@
 <template>
   <div>
-    <div>
-      <input type="file"
-            @change="onFileChange" />
-      <img :src="image">
+    <h1>上传图片demo</h1>
+    <input type="file"
+          multiple
+          id="file"
+          @change="onFileChange" />
+    <div v-for="img in images" :key="img">
+      <img :src="img" width="100" height="100" /><br>
     </div>
-    <button type="submit" @click="upload">upload</button>
+    <button type="submit"
+            @click="upload">upload</button>
+    <h3>{{result}}</h3>
   </div>
 </template>
 <script>
@@ -14,27 +19,37 @@ export default {
     return {
       files: null,
       formData: null,
-      image: null
+      images: [],
+      result: '',
     }
   },
   methods: {
     upload() {
       this.formData = new FormData()
-      this.formData.append("userfile", this.files[0])
-      this.formData.append('imgName', this.files[0].name)
+      for (let file of this.files) {
+        this.formData.append("file", file)
+      }
       this.http.post('http://localhost:3001/upload', this.formData).then(res => {
-        console.log(res.data)
+        this.result = res.data.result
+        if (res.data.code === '0') {
+          this.files = []
+          this.images = []
+          let fileDOM = document.getElementById('file')
+          fileDOM.value = ''
+        }
       })
     },
     onFileChange(e) {
       this.files = e.target.files || e.dataTransfer.files
       if (!this.files.length) return
-      this.createImage(this.files[0])
+      for (let img of this.files) {
+        this.createImage(img)
+      }
     },
-    createImage(file) {
+    createImage(file, index) {
       const reader = new FileReader()
       reader.onload = (e) => {
-        this.image = e.target.result
+        this.images.push(e.target.result)
       }
       reader.readAsDataURL(file)
     },
